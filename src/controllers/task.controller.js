@@ -67,3 +67,24 @@ export const updateTaskStatus = async (req, res) => {
     return res.status(500).json({ error: "Error al actualizar tarea" })
   }
 }
+
+export const deleteTask = async (req, res) => {
+  const { id } = req.params
+  const userId = req.user.id
+
+  try {
+    const result = await pool.query(
+      "DELETE FROM tasks WHERE id = $1 AND user_id = $2 RETURNING *",
+      [id, userId]
+    )
+
+    if(result.rows.length === 0){
+      return res.status(404).json({ error: "Tarea no encontrada" })
+    }
+
+    res.json({ message: "Tarea eliminada" })
+  } catch (error) {
+    console.error(error)
+    res.status(500).json({ error: "Error al eliminar tarea" })
+  }
+}
