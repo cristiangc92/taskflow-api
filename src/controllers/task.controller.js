@@ -5,7 +5,7 @@ export const getTaskByProject = async (req, res) => {
 
     try {
         const result = await pool.query(
-            "SELECT * FROM task WHERE project_id = $1 AND user_id = $2 ORDER BY created_at DESC",
+            "SELECT * FROM tasks WHERE project_id = $1 AND user_id = $2 ORDER BY created_at DESC",
             [projectId, req.user.id]
         )
 
